@@ -1,42 +1,72 @@
-# silcnitc
-A simple EXPL compiler.
+# Stage 0 : Installation and Preparation
 
-## Instructions
-Each branch of this repository corresponds to a particular stage in the [roadmap](https://silcnitc.github.io/expl-docs/roadmap).
-All required learning material can be found on the main resource website.
++ ### LEX tutorial
+    The lexical analyzer (tokenizer) for our compiler is specified in a LEX file (.l). `yylex` function is responsible for reading input and validating lexical units.
 
-Any one of the below two methods can be used for initial setup:
-+ Docker setup
-+ Manual installation
+    ```
+    lex <file.l>    # converts lex file to c program (lex.yy.c)
+    gcc lex.yy.c
+    ./a.out
+    ```
 
-## Docker setup
-### Build container image (one-time)
-```
-docker build -t expl:ubuntu20.04 .
-```
+    #### Programs
+    + `even-odd.l` - Detects even/odd numbers
+    + `exercise.l` - Write a lex file
+        + To count the number of lines, words, and characters in the input.
+        + To count the number of integers and floating point numbers appearing in the input.
+        + To list out all words of length three, starting with "A" to uppercase.
+        + To list out all C-like comments (both single line and multi line comments) from a text file.
 
-### Start container instance (one-time)
-```
-docker run -v ${PWD}/workdir:/home/expl/xsm_expl/workdir -d --name expl -i expl:ubuntu20.04
-```
++ ### YACC tutorial
+    The [CFG](https://en.wikipedia.org/wiki/Context-free_grammar) accepted by our compiler is specified in a YACC file (.y). `yyparse` function is responsible for parsing tokens and validating input program.
 
-This will start an instance of the container and map the local folder `workdir` to `/home/expl/workdir` directory of the container. We now have a container named `expl` running in the background.
+    ```
+    yacc <file.y>   # converts yacc file to c program (y.tab.c)
+    gcc y.tab.c
+    ./a.out
+    ```
+    
+    #### Programs
+    + `intopost.y` - Converts inorder expression to postorder form
+    + `exercise.y` - Recognizes nested IF control statements and valid variables
 
-### Connect to container 
-```
-docker start expl # Run this command to start container if not already running
-docker exec -it expl /bin/bash # Get bash shell inside container
++ ### Using YACC with LEX tutorial
+    ```
+    yacc -d <file.y>
+    lex <file.l>
+    gcc lex.yy.c y.tab.c -o exprtree
+    ./exprtree
+    ```
 
-# If root permissions are required use
-# docker exec -u root -it expl /bin/bash 
-```
+    #### Important YACC flags:
+    + `-d` generates `y.tab.h` which contains definitions for all tokens declared in the YACC file.
+    + `-v` generates `y.output` which contains detailed information about states and conflicts (if any) of the [PDA](https://en.wikipedia.org/wiki/Pushdown_automaton) corresponding to the CFG defined
 
-### Initialize eXpOS (one-time)
-All compiled programs are tested on [eXpOS](https://exposnitc.github.io/expos-docs). Run the following commands after connecting to container.
-```
-cd /home/expl/xsm_expl/xfs-interface
-./init
-```
+    #### Programs
+    + `exprtree` - Create [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) from expression
+    + `inf2posf` - Convert inorder expression to postorder form
+    + `inf2pref` - Convert inorder expression to preorder form
 
-## Manual installation
-For local setup, follow [link](https://silcnitc.github.io/expl-docs/install).
++ ### GDB tutorial
+    #### Instructions for using GDB:
+    + Compile program with `gcc -g`
+    + Run program with arguments (if any) using `gdb --args <executable> [arg1] [arg2] ..`
+    + Set breakpoints with `break <functionName>`
+    + For layout with better readability, run `layout src`
+    + Run program with `run`
+    + Use `next|continue` to navigate through program
+    + To check value in a variable, use `print <symbolName>`
+
++ ### XSM execution environment tutorial
+    Compiler converts `expl` code to `xsm`. The generated xsm file is tested on eXpOS.
+
+    ```
+    ./xsm [-l <libraryFile>] -e <file.xsm> [--debug]
+    ```
+
+    #### Programs
+    + `comp3` - Compares 3 numbers and finds the largest among them. 
+        + `comp3_1` uses fixed values and can be inspected in debug mode
+        + `comp3_2` reads and writes to terminal
+        + `comp3_3` uses library system calls for read and write
+    + `nsum` - read numbers until a zero is entered and print their sum.

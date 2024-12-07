@@ -1,0 +1,9 @@
+25 hello
+world
+25.4
+Ace
+/* Testing
+Comments
+*/
+// testing slc
+/**/*/
