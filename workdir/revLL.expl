@@ -1,0 +1,52 @@
+type
+    Node {
+        int data;
+        Node next;
+    }
+endtype
+
+decl 
+    int revPrint(Node x);
+enddecl
+
+int revPrint(Node x) {
+    decl int t; enddecl
+    begin
+        if (x == null) then
+            return 1;
+        endif;
+        t = revPrint(x.next);
+        write(x.data);
+        return 1;
+    end
+}
+
+int main () {
+    decl
+        Node head, t, x;
+        int n;
+    enddecl
+    begin
+        initialize();
+        head = null;
+        
+        read(n);
+        while (n != 0) do
+            x = alloc();
+            x.data = n;
+            x.next = null;
+
+            if (head == null) then
+                head = x;
+            else
+                t.next = x;
+            endif;
+            
+            t = x;
+            read(n);
+        endwhile;
+
+        n = revPrint(head);
+        return 1;
+    end
+}
