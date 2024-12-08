@@ -1,0 +1,17 @@
+begin
+    decl
+        int a, b;
+        int *c, *d;
+        str e, *f;
+    enddecl
+
+    a = 5;
+    b = 3;
+    c = &a;
+    d = c + 1;
+    write(*c);
+    write(*d);
+    f = &e;
+    *f = "hello";
+    write(e);
+end;

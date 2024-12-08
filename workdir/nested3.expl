@@ -1,0 +1,28 @@
+begin
+    decl
+        int i, j, k, n, sum;
+    enddecl
+
+    write("N:");
+    read(n+1);
+    i = 1;
+    sum = 0;
+
+    while (i <= n>k) do
+        j = 1;
+        while (j <= i) do
+            k = 1;
+            while (k <= j) do
+                sum = sum + 1;
+                k = k + 1;
+            endwhile;
+            
+            j = j + 1;
+        endwhile;
+
+        i = i + 1;
+    endwhile;
+
+    write("Sum:");
+    write(sum);
+end;

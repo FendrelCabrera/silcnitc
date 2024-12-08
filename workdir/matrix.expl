@@ -1,0 +1,60 @@
+begin
+    decl
+        int m1[5][5], m2[5][5], m3[5][5];
+        int n, i, j, k, sum;
+    enddecl
+    
+    write("n<5:");
+    read(n);
+
+    write("EnterM1:");
+    i = 0;
+    while(i < n) do
+        j = 0;
+        while(j < n) do
+            read(m1[i][j]);
+            j = j + 1;
+        endwhile;
+        i = i + 1;
+    endwhile;
+
+    write("EnterM2:");
+    i = 0;
+    while(i < n) do
+        j = 0;
+        while(j < n) do
+            read(m2[i][j]);
+            j = j + 1;
+        endwhile;
+        i = i + 1;
+    endwhile;
+
+    i = 0;
+    while(i < n) do
+        j = 0;
+        while(j < n) do
+            sum = 0;
+            k = 0;
+            
+            while(k < n) do
+                sum = sum + m1[i][k]*m2[k][j];
+                k = k + 1;
+            endwhile;
+
+            m3[i][j] = sum;
+            j = j + 1;
+        endwhile;
+        i = i + 1;
+    endwhile;
+
+    write("M3:");
+    i = 0;
+    while(i < n) do
+        j = 0;
+        while(j < n) do
+            write(m3[i][j]);
+            j = j + 1;
+        endwhile;
+        i = i + 1;
+    endwhile;
+end;
